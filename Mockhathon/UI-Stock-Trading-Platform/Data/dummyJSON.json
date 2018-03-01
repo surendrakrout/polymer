@@ -1,0 +1,44 @@
+{
+  "data": {
+    "stockDetails": [
+      {
+        "symbol": "HCL",
+        "LTP": "1200",
+        "bidRate": "1180",
+        "askRate": "1280"
+      },
+      {
+        "symbol": "Infosys",
+        "LTP": "1300",
+        "bidRate": "1250",
+        "askRate": "1350"
+      },
+      {
+        "symbol": "TCS",
+        "LTP": "1400",
+        "bidRate": "1300",
+        "askRate": "1450"
+      },
+      {
+        "symbol": "Wipro",
+        "LTP": "1000",
+        "bidRate": "999",
+        "askRate": "1100"
+      }
+    ],
+    "officerList": [
+      {
+        "ofcName": "OffcierOne",
+        "OfcID": "ofc01"
+      },
+      {
+        "ofcName": "OffcierOne",
+        "OfcID": "ofc01"
+      },
+      {
+        "ofcName": "OffcierOne",
+        "OfcID": "ofc01"
+      }
+    ]
+  }
+}

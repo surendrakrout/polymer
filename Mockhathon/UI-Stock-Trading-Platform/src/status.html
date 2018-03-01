@@ -1,0 +1,179 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid-sorter.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid-column-group.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="status-page">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+        paper-button.indigo {
+        background-color: var(--paper-indigo-500);
+        color: white;
+        --paper-button-raised-keyboard-focus: {
+          background-color: var(--paper-pink-a200) !important;
+          color: white !important;
+    };
+
+    
+  }
+  paper-button.indigo:hover {
+    background-color: var(--paper-indigo-400);
+  }
+  paper-button.green {
+    background-color: var(--paper-green-500);
+    color: white;
+  }
+  paper-button.green[active] {
+    background-color: var(--paper-red-500);
+  }
+
+  vaadin-grid#grid {
+
+      font-family: Roboto, sans-serif;
+      --divider-color: rgba(0, 0, 0, var(--dark-divider-opacity));
+
+      --vaadin-grid-cell: {
+        padding: 0;
+      };
+
+      --vaadin-grid-header-cell: {
+        height: 64px;
+        color: rgba(0, 0, 0, var(--dark-secondary-opacity));
+        font-size: 12px;
+      };
+
+      --vaadin-grid-body-cell: {
+        height: 48px;
+        color: rgba(0, 0, 0, var(--dark-primary-opacity));
+        font-size: 13px;
+      };
+
+      --vaadin-grid-body-row-hover-cell: {
+        background-color: var(--paper-grey-200);
+      };
+
+      --vaadin-grid-body-row-selected-cell: {
+        background-color: var(--paper-grey-100);
+      };
+
+    }
+
+    </style>
+
+   <iron-ajax auto 
+      url="http://10.117.189.11:8080/currentStatus/{{param}}"
+      handle-as"json"
+      debounce-duration="300"
+      on-response="getData"></iron-ajax>
+
+    <div class="card">
+      <div style="margin-left: 80%;">
+      <paper-button raised class="indigo" on-tap="_gotoPlaceOrder">Place Order</paper-button>
+      <paper-button toggles raised class="green" on-tap="_logout">Logout</paper-button>
+      </div>
+      <h1>Placed Order Status</h1>
+      <div style="margin-top:12px;">
+      <vaadin-grid id="grid" aria-label="Basic Binding Example" items="[[userData]]">
+        <vaadin-grid-column>
+          <template class="header">
+            <vaadin-grid-sorter path="Stock" direction="asc">Stock</vaadin-grid-sorter>
+          </template>
+          <template>[[item.Stock]]</template>
+        </vaadin-grid-column>
+        <vaadin-grid-column>
+          <template class="header">
+            <vaadin-grid-sorter path="Transaction_Type">Transction Type</vaadin-grid-sorter>
+          </template>
+          <template>[[item.Transaction_Type]]</template>
+        </vaadin-grid-column>
+        <vaadin-grid-column width="150px">
+          <template class="header">
+            <vaadin-grid-sorter path="Qty">Quantity</vaadin-grid-sorter>
+          </template>
+          <template>[[item.Qty]]</template>
+        </vaadin-grid-column>
+        <vaadin-grid-column>
+          <template class="header">
+            <vaadin-grid-sorter path="Price">Price</vaadin-grid-sorter>
+          </template>
+          <template>[[item.Price]]</template>
+        </vaadin-grid-column>
+        <vaadin-grid-column>
+          <template class="header">
+            <vaadin-grid-sorter path="Total_Amt">Total Amount</vaadin-grid-sorter>
+          </template>
+          <template>[[item.Total_Amt]]</template>
+        </vaadin-grid-column>
+        <vaadin-grid-column>
+          <template class="header">
+            <vaadin-grid-sorter path="Status">Status</vaadin-grid-sorter>
+          </template>
+          <template>[[item.Status]]</template>
+          <!--<template class="footer">Last Name</template>-->
+        </vaadin-grid-column>
+      </vaadin-grid>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    class StatusPage extends Polymer.Element {
+      static get is() { return 'status-page'; }
+
+      static get properties(){
+        return{
+          userData:{
+            type:Object,
+            value:{},
+            notify:true
+          },
+          param:{
+            type:String,
+            value:''
+          }
+        }
+      }
+
+      ready() {
+    super.ready();
+    this.param = localStorage.getItem("userID");
+  }
+
+      getData(event,Request){
+        this.userData = Request.response.response;
+        console.log(this.userData);
+      }
+
+       _gotoPlaceOrder(){
+        window.location.href="/place-order";
+      }
+      _logout(){
+        window.location.href="/home";
+        localStorage.removeItem(userID);
+
+      }
+
+
+    }
+
+    window.customElements.define(StatusPage.is, StatusPage);
+  </script>
+</dom-module>

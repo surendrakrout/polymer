@@ -1,0 +1,50 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>Banking details</title>
+
+    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../bower_components/web-component-tester/browser.js"></script>
+
+    <!-- Import the element to test -->
+    <link rel="import" href="../src/details.html">
+  </head>
+  <body>
+    <test-fixture id="details-test">
+      <template>
+        <transaction-details></transaction-details>
+      </template>
+    </test-fixture>
+
+    <script>
+        suite('Place holder button tests', function() {
+        var grid, myView;
+      setup(function() {
+          myView = fixture('details-test');
+          grid = myView.shadowRoot.querySelector('#grid');
+    //     stub('paper-button', {            
+    //       click: function() {               
+    //         console.log('paper-button.click called');
+    //       }
+    //   });
+        });
+        test('Check if button is in the page', function(){
+          expect(grid).to.be.ok;
+        });
+});
+    </script>
+  </body>
+</html>

@@ -1,0 +1,210 @@
+{
+  "data": {
+    "user_details": {
+      "user_name":"abc",
+      "user_id": 12,
+      "user_account": "XXXXXXXX"
+    },
+    "transaction_details": [
+      {
+        "amount": 100,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+       "amount": 200,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+        "amount": 50,
+        "currency": "INR",
+        "type": "Dr.",
+        "description": "10XXx/Debited"
+      },
+      {
+        "amount": 100,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+       "amount": 200,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+        "amount": 50,
+        "currency": "INR",
+        "type": "Dr.",
+        "description": "10XXx/Debited"
+      },
+      {
+        "amount": 100,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+       "amount": 200,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+        "amount": 50,
+        "currency": "INR",
+        "type": "Dr.",
+        "description": "10XXx/Debited"
+      },
+      {
+        "amount": 100,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+       "amount": 200,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+        "amount": 50,
+        "currency": "INR",
+        "type": "Dr.",
+        "description": "10XXx/Debited"
+      },
+      {
+        "amount": 100,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+       "amount": 200,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+        "amount": 50,
+        "currency": "INR",
+        "type": "Dr.",
+        "description": "10XXx/Debited"
+      },
+      {
+        "amount": 100,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+       "amount": 200,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+        "amount": 50,
+        "currency": "INR",
+        "type": "Dr.",
+        "description": "10XXx/Debited"
+      },
+      {
+        "amount": 100,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+       "amount": 200,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+        "amount": 50,
+        "currency": "INR",
+        "type": "Dr.",
+        "description": "10XXx/Debited"
+      },
+      {
+        "amount": 100,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+       "amount": 200,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+        "amount": 50,
+        "currency": "INR",
+        "type": "Dr.",
+        "description": "10XXx/Debited"
+      },
+      {
+        "amount": 100,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+       "amount": 200,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+        "amount": 50,
+        "currency": "INR",
+        "type": "Dr.",
+        "description": "10XXx/Debited"
+      },
+      {
+        "amount": 100,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+       "amount": 200,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+        "amount": 50,
+        "currency": "INR",
+        "type": "Dr.",
+        "description": "10XXx/Debited"
+      },
+      {
+        "amount": 100,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+       "amount": 200,
+        "currency": "INR",
+        "type": "Cr.",
+        "description": "10XXx/Credited"
+      },
+      {
+        "amount": 50,
+        "currency": "INR",
+        "type": "Dr.",
+        "description": "10XXx/Debited"
+      }
+    ],
+    "total_transactions_amount" : 125
+  }
+}

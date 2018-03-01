@@ -1,0 +1,64 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="app-tasklist">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+    <iron-ajax
+	 	auto
+	 	url="../data/dummy-json.json"
+	 	handle-as="json"
+	 	last-response="{{jsondata}}"></iron-ajax>
+
+    <div class="card">
+
+      <template is="dom-repeat" items="[[jsondata.data.taskList]]">
+      <div class="card" style="background-color: whitesmoke;">
+       <span><b>Task Name: </b>[[item.taskName]]</span><br>
+       <span><b>Task Id: </b>[[item.taskID]]</span><br>
+       <span><b>Description: </b>[[item.desc]]</span>
+      </div>
+    </template>
+      <div style="margin-left:80%">
+      <paper-button raised class="indigo" on-click="_goBack" style="background-color: darkgray; color:white">Back</paper-button>
+      <paper-button raised class="indigo" on-click="_createTask" style="background-color:#4285f4; color:white">Create Task</paper-button>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+    class AppTasklist extends Polymer.Element {
+      static get is() { return 'app-tasklist'; }
+
+      _createTask(){
+        window.history.pushState({},null,'/task-entry');
+          window.location.href= '/task-entry';
+      }
+
+      _goBack(){
+        window.history.back();
+      }
+    }
+
+    window.customElements.define(AppTasklist.is, AppTasklist);
+  </script>
+</dom-module>

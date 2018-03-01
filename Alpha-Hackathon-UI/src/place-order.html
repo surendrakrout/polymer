@@ -1,0 +1,221 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+<link rel="import" href="../bower_components/neon-animation/web-animations.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="place-order">
+    <template>
+     
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+        paper-button.indigo {
+    background-color: var(--paper-indigo-500);
+    color: white;
+    --paper-button-raised-keyboard-focus: {
+      background-color: var(--paper-pink-a200) !important;
+      color: white !important;
+    };
+  }
+  paper-button.indigo:hover {
+    background-color: var(--paper-indigo-400);
+  }
+  paper-button.green {
+    background-color: var(--paper-green-500);
+    color: white;
+  }
+  paper-button.green[active] {
+    background-color: var(--paper-red-500);
+  }
+  .align-right{
+    text-align: right;
+  }
+   paper-dropdown-menu, paper-listbox {
+    width: 100%;
+  }
+  paper-dropdown-menu {
+    margin: auto;
+    display: block;
+  } 
+  #stock-details{
+    width:70%;
+    padding:20px;
+    margin:0 auto;
+  }
+  img{
+    border-radius:15px;
+    width:30px;
+    margin-right:5px;
+  }
+  h1{
+    color:#fff;
+  }
+  #stock-details tr td{
+    padding:5px;
+    vertical-align: middle;
+    color:#fff;
+  }
+  #stock-details span{
+    vertical-align:middle;  
+  }
+  .stock-name-table{
+    font-weight:bold;
+    display:inline-block;
+    vertical-align: top;
+  }
+  #stock-details tr td:first-child{
+      font-weight: bold;
+  }
+  tr.button-row td{
+    margin-top:10px;
+  }
+  .stock-name-table{
+    text-transform:uppercase
+  }
+  .card{
+    background: linear-gradient(to right, orange , orangered);
+  }
+    </style>
+     <iron-ajax id="submitOrder"
+    handle-as="json"
+    content-type="application/json"
+    on-response="_handleResponse"
+    debounce-duration="300">
+</iron-ajax>
+       <div class="card">
+    <div>
+      <div style="float: left; width: 48%;">
+      <h1>Stock Details</h1>
+    </div>
+      <div style="float: right; width: 48%;text-align: right;">
+        <paper-button raised class="green" on-tap="_history" name="purchase">Purchase History</paper-button>
+      </div>
+     </div>
+    <table id="stock-details">
+      <tr>
+          <td aria-label="">Stock Name:</td>
+          <td aria-label=""><p class="stock-name-table">{{stockDetails.stockName}}</p></td>
+      </tr>
+      <tr>
+        <td aria-label="">Number of Stocks</td>
+        <td>{{stockDetails.noOfStock}}</td>
+      </tr>
+      <tr>
+        <td aria-label="">Price</td>
+        <td>AUD {{stockDetails.price}}</td>
+      </tr>
+      <tr>
+        <td>Brokerage Amount</td>
+        <td>AUD {{stockDetails.borkageCharge}}</td>
+      </tr>
+      <tr>
+        <td>Total Amount</td>
+        <td>AUD {{stockDetails.total}}</td>
+      </tr>
+      <tr class="button-row">
+        <td>
+            <paper-button toggles raised class="green" on-tap="_continueOrder" name="continueOrder">Continue</paper-button>
+        </td>
+        <td>
+            <paper-button toggles raised class="green" on-tap="_cancelOrder" name="cancelOrder">Cancel</paper-button>    
+        </td>
+      </tr>
+    </table>
+    <!-- <div>
+        <paper-button toggles raised class="green" on-tap="_continueOrder" name="continueOrder">Continue</paper-button>
+        <paper-button toggles raised class="green" on-tap="_cancelOrder" name="cancelOrder">Cancel</paper-button>
+    </div> -->
+  </div>
+  </template>
+
+    <script>
+        class PlaceOrder extends Polymer.Element {
+            static get is() {
+                return 'place-order';
+            }
+
+            static get properties() {
+            return {
+                  symbol: {
+                    type:String,
+                    value: ''
+                  },
+                  type: {
+                    type:String,
+                    value: 'buy'
+                  },
+                  price: {
+                    type:String,
+                    value: ''
+                  },
+                  quantity: {
+                    type:String,
+                    value: ''
+                  },
+                  stockDetails:{
+                    type:Object
+                  }
+            };
+          }
+
+          ready(){
+            super.ready();
+            var locaObj = localStorage.getItem('DetailsObject');
+            this.stockDetails = JSON.parse(locaObj);
+            console.log(locaObj);
+            console.log(this.stockDetails)
+          }
+          // _bindedDetails
+          _cancelOrder(){
+            window.location.href= '/home';
+          }
+
+           _history(){
+            window.location.href= '/history';
+          }
+          _continueOrder(){
+            this.params = {
+                    "name": this.stockDetails.name,
+                    "stockName": this.stockDetails.stockName,
+                    "noOfStock": this.stockDetails.noOfStock,
+                    "price":this.stockDetails.price,
+                    "borkageCharge":this.stockDetails.borkageCharge,
+                    "total":this.stockDetails.total
+                };
+                var ajax = this.$.submitOrder;
+                ajax.url = "http://10.117.189.125:8081/stockexg/stock/submit";
+                ajax.method="post"
+                ajax.body = this.params;
+                ajax.generateRequest();
+            //window.location.href="/order-success";
+          }
+          _handleResponse(event,Response){
+            window.location.href="/order-success";
+          }
+        }
+
+        window.customElements.define(PlaceOrder.is, PlaceOrder);
+    </script>
+</dom-module>

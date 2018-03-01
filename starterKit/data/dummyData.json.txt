@@ -1,0 +1,30 @@
+{
+	"data": {
+		"taskList": [{
+			"taskName": "TaskOne",
+			"taskID": "Task_01",
+			"desc": "Task Evolution",
+			"assignTo": "Ofc01"
+		}, {
+			"taskName": "TaskTwo",
+			"taskID": "Task_02",
+			"desc": "Task Introduction",
+			"assignTo": "Ofc02"
+		}, {
+			"taskName": "TaskThree",
+			"taskID": "Task_03",
+			"desc": "Task Excecution",
+			"assignTo": "Ofc03"
+		}],
+		"officerList": [{
+			"ofcName": "OffcierOne",
+			"OfcID": "ofc01"
+		}, {
+			"ofcName": "OffcierOne",
+			"OfcID": "ofc01"
+		}, {
+			"ofcName": "OffcierOne",
+			"OfcID": "ofc01"
+		}]
+	}
+}

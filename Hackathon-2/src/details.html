@@ -1,0 +1,287 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid-sorter.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid-column-group.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid-filter.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="transaction-details">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+        paper-button.indigo {
+        background-color: var(--paper-indigo-500);
+        color: white;
+        --paper-button-raised-keyboard-focus: {
+          background-color: var(--paper-pink-a200) !important;
+          color: white !important;
+    };
+
+    
+  }
+  paper-button.indigo:hover {
+    background-color: var(--paper-indigo-400);
+  }
+  paper-button.green {
+    background-color: var(--paper-green-500);
+    color: white;
+  }
+  paper-button.green[active] {
+    background-color: var(--paper-red-500);
+  }
+
+    .ud-main {
+      clear: both;
+      min-height: 50px;
+      background: #c042f4;
+      color: #fff;
+    }
+    .ud-left {
+      float: left;
+      width: 60%;
+    }
+    .ud-right {
+      float: right;
+      width: 40%;
+      text-align: right;
+    }
+    .td-main {
+      margin-bottom: 10px;
+    }
+    .td-left {
+      display: inline-block;
+      width: 49.6%
+    }
+    .td-right {
+      display: inline-block;
+      width: 50%;
+      text-align: right;
+    }
+    .user-img {
+      width:100%;
+      border-radius: 50%;
+      border: 5px solid #af24e8;
+    }
+    .ud-in-left {
+      float: left;
+    }
+    .ud-in-right {
+      padding-left: 10px;
+      float: left;
+    }
+    .user-img {
+      width: 50px;
+      height: auto;
+    }
+
+    </style>
+
+   <iron-ajax id="transacService"
+      handle-as"json"
+      debounce-duration="300"
+      on-response="_getData"></iron-ajax>
+      <div class="card ud-main">
+        <div class="ud-left">
+          <div class="ud-in-left">
+            <img class="user-img" src="..\images\user\default-user-image.png">
+          </div>
+          <div class="ud-in-right">
+            <span> User Name : <b>[[userData.user_details.user_name]]</b></span><br>
+            <span> Account Number : <b>[[userData.user_details.user_account]]</b></span>
+          </div>
+        </div>
+        <template is="dom-if" if="[[flag]]">
+          <div class="ud-right"><span>Total Amount: <b>[[userData.total_transactions_amount]]</b></span></div>
+        </template>
+      </div>
+    <div class="card">
+      <div class="td-main">
+        <h1 class="td-left">Transaction Details:</h1>
+        <div class="td-right">
+        <label for="trans-type">Filter: </label>
+        <paper-dropdown-menu id="trans-type" label="Transaction type" value="{{transType}}" noink no-animations>
+          <paper-listbox slot="dropdown-content" class="dropdown-content">
+            <paper-item >All</paper-item>
+            <paper-item >Credit</paper-item>
+            <paper-item >Debit</paper-item> 
+              </paper-listbox></paper-dropdown-menu>
+        </div>
+      </div>
+      <paper-checkbox checked="{{multiSort}}">Enable Multi-Sorting</paper-checkbox>
+      <vaadin-grid id="grid" aria-label="Basic Binding Example" items="[[gridItems]]" multi-sort="[[multiSort]]" page-size="10">
+        <vaadin-grid-column>
+          <template class="header">
+            <vaadin-grid-sorter path="description" direction="asc">Description</vaadin-grid-sorter>
+            <!-- <vaadin-grid-filter aria-label="Description" path="description" value="[[_desc]">
+                <input slot="filter" placeholder="Description" value="{{_desc::input}}" focus-target>
+              </vaadin-grid-filter> -->
+          </template>
+          <template>[[item.description]]</template>
+        </vaadin-grid-column>
+        <vaadin-grid-column>
+          <template class="header">
+            <vaadin-grid-sorter path="type">Transction Type</vaadin-grid-sorter>
+          </template>
+          <template>[[item.type]]</template>
+        </vaadin-grid-column>
+        <vaadin-grid-column width="150px">
+          <template class="header">
+            <vaadin-grid-sorter path="amount">Amount</vaadin-grid-sorter>
+          </template>
+          <template>[[item.amount]]</template>
+        </vaadin-grid-column>
+        <vaadin-grid-column>
+          <template class="header">
+            <vaadin-grid-sorter path="currency">Currency</vaadin-grid-sorter>
+          </template>
+          <template>[[item.currency]]</template>
+        </vaadin-grid-column> 
+      </vaadin-grid>
+      <div id="pages">
+          <button on-click="_prev">&lt;</button>
+          <template is="dom-repeat" items="[[pages]]">
+            <button on-click="_select" selected$="[[_isSelected(page, item)]]">[[item]]</button>
+          </template>
+          <button on-click="_next">&gt;</button>
+        </div>
+    </div>
+  </template>
+
+  <script>
+    class TransactionDetails extends Polymer.Element {
+      static get is() { return 'transaction-details'; }
+
+      static get properties(){
+        return{
+          userData:{
+            type:Object,
+            value:{},
+            notify:true
+          },
+          flag:{
+            type:Boolean,
+            value:false
+          },
+          transType:{
+            type:String,
+            value:'',
+            observer:'_handleSelectEvent'
+          },
+          gridItems:{
+            type:Array,
+            value:[]
+          },
+          page:{
+            type:Number,
+            value:0
+          },
+          pages:{
+            type:Array
+          }
+        }
+      }
+
+      transacService() {
+        console.log("Ajax called");
+        var ajax = this.$.transacService;
+        ajax.method = "get";
+        ajax.url = "../data/dummyJSON.json"
+        ajax.generateRequest();
+      }
+
+      _handleSelectEvent(transType) {
+      // this.selectedItem = e.target.selectedItem.getAttribute('value');
+      console.log(transType);
+        if(transType && transType !== "All") {
+         this.transacService();
+           this.flag= true;
+        }else{
+          this.flag= false
+        }
+       
+      }
+
+      static get observers() {
+        return [
+          '_itemsChanged(gridItems, page)',
+        ];
+      }
+
+      ready() {
+        super.ready();
+        // this.param = localStorage.getItem("userID");
+        this.transacService();
+      }
+
+      _getData(event,Request){
+        this.userData = Request.response.data;
+        this.gridItems = Request.response.data.transaction_details;
+        console.log(this.userData);
+      }
+
+      _isSelected(page, item) {
+          return page === item - 1;
+        }
+
+        _select(e) {
+          this.page = e.model.item - 1;
+        }
+
+        _next() {
+          this.page = Math.min(this.pages.length - 1, this.page + 1);
+        }
+
+        _prev() {
+          this.page = Math.max(0, this.page - 1);
+        }
+
+        _itemsChanged(items, page) {
+          if(items.length != 0) {
+          if (!this.pages) {
+            this.pages = Array.apply( null, {length: Math.ceil(items.length / this.$.grid.pageSize)} ).map(function(item, index) {
+              return index + 1;
+            });
+          }
+          var start = page * this.$.grid.pageSize;
+          var end = (page + 1) * this.$.grid.pageSize;
+          this.$.grid.items = items.slice(start, end);
+          }
+          
+        }
+
+       _gotoPlaceOrder() {
+        window.location.href="/place-order";
+      }
+      _logout(){
+        window.location.href="/login";
+        localStorage.removeItem(userID);
+
+      }
+
+
+    }
+
+    window.customElements.define(TransactionDetails.is, TransactionDetails);
+  </script>
+</dom-module>

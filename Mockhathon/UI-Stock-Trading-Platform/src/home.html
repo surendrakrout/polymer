@@ -1,0 +1,173 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-input-container.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/chart-elements/chart-elements.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid-sorter.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid-column-group.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="home-page">
+    <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+       .primary {
+        color: #fff;
+        background-color: var(--app-primary-color);
+      }
+      .align-right{
+        text-align: right;
+      }
+      paper-button.pink {
+    color: var(--paper-pink-a200);
+    --paper-button-ink-color: var(--paper-pink-a200);
+  }
+  paper-button.pink:hover {
+    background-color: var(--paper-pink-100);
+  }
+  chart-line{
+    width:500px;
+  }
+    </style>
+
+    <iron-ajax
+	 	auto
+	 	url="../data/dummyJSON.json"
+	 	handle-as="json"
+	 	last-response="{{jsondata}}"></iron-ajax>
+
+    <div class="card" style="float:left;width:94%">
+       <div class="align-right">
+            <paper-button class="pink" on-tap="_gotoLogin" name="login">Place Order</paper-button>
+        </div>
+           <div class="card" style="float:left;width:45%">
+
+        <h1>Trade View</h1>
+         <vaadin-grid id="grid" aria-label="Basic Binding Example" items="[[jsondata.data.stockDetails]]">
+        <vaadin-grid-column>
+          <template class="header">
+            <vaadin-grid-sorter path="Stock" direction="asc">Stock Symbol</vaadin-grid-sorter>
+          </template>
+          <template><a href="">[[item.symbol]]</a></template>
+        </vaadin-grid-column>
+        <vaadin-grid-column>
+          <template class="header">
+            <vaadin-grid-sorter path="Transaction_Type">LTP</vaadin-grid-sorter>
+          </template>
+          <template>[[item.LTP]]</template>
+        </vaadin-grid-column>
+        <vaadin-grid-column width="150px">
+          <template class="header">
+            <vaadin-grid-sorter path="Qty">BidRate</vaadin-grid-sorter>
+          </template>
+          <template>[[item.bidRate]]</template>
+        </vaadin-grid-column>
+        <vaadin-grid-column>
+          <template class="header">
+            <vaadin-grid-sorter path="Price">AskRate</vaadin-grid-sorter>
+          </template>
+          <template>[[item.askRate]]</template>
+        </vaadin-grid-column>
+        <vaadin-grid-column>
+      </vaadin-grid>
+           </div>
+           <div class="card"  style="float:right;width:40%">
+
+         <h1>Stock Trend</h1>
+          <div class="charts-styles"> 
+                <chart-line data="{{data}}"></chart-line>
+        </div>
+           </div>
+    </div>
+  </template>
+
+    <script>
+        class HomePage extends Polymer.Element {
+            static get is() {
+                return 'home-page';
+            }
+           constructor(){
+             super()
+
+              this.data = {
+
+                  labels: ["!2:00", "1:00", "14:00", "23:00", "11:00", "12:00", "12:30"],
+
+                  datasets: [
+
+                    {
+
+          label: "",
+
+                      backgroundColor: "transparent",
+
+                      borderColor: "rgba(220,220,220,1)",
+
+                      borderWidth: 0,
+
+                      pointBackgroundColor: "rgba(220,220,220,1)",
+
+                      pointBorderColor: "#fff",
+
+                      pointHoverBackgroundColor: "#fff",
+
+                      pointHoverBorderColor: "rgba(220,220,220,1)",
+
+                      data: []
+
+                    },
+
+                    {
+
+                      label: "TCS",
+
+                      backgroundColor: "rgba(151,187,205,0.2)",
+
+                      borderColor: "rgba(151,187,205,1)",
+
+                      borderWidth: 2,
+
+                      pointBackgroundColor: "rgba(151,187,205,1)",
+
+                      pointBorderColor: "#fff",
+
+                      pointHighlightFill: "#fff",
+
+                      pointHoverBorderColor: "rgba(151,187,205,1)",
+
+                      data: [81, 80, 79, 82, 80, 79, 81]
+
+                    }
+
+                  ]
+
+                }
+            }
+            _gotoLogin() {
+                window.location.href = "/login"
+            }
+        }
+
+        window.customElements.define(HomePage.is, HomePage);
+    </script>
+</dom-module>

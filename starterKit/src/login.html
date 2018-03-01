@@ -1,0 +1,105 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-input-container.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="shared-styles.html">   
+
+
+
+<dom-module id="register-login">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+        padding: 10px;
+       --app-primary-color: #4285f4;
+       --app-secondary-color: black;
+      }
+      .wrapper-btns {
+         margin-top: 15px;
+        }
+        paper-button.link {
+            color: #757575;
+        }
+
+        app-header {
+        color: #fff;
+        background-color: var(--app-primary-color);
+      }
+
+      .primary {
+        color: #fff;
+        background-color: var(--app-primary-color);
+      }
+    </style>
+
+    <div class="card">
+    <div id="unauthenticated">
+        <h1>Log In</h1>
+
+        <p><strong>Log in</strong> or <strong>sign up</strong> to access Landing Page</p>
+        
+        <!--<paper-input-container>
+            <label>Username</label>
+            <input is="iron-input" id="username" type="text" bind-value="{{formData.username}}">
+        </paper-input-container>-->
+
+        <paper-input label="Username" value="{{username}}" required auto-validate error-message="needs some text!">
+          <paper-icon-button slot="suffix" on-click="clearInput" icon="clear" alt="clear" title="clear"></paper-icon-button>
+        </paper-input>
+
+        <paper-input label="Password" value="{{formData.password}}">
+          <paper-icon-button slot="suffix" icon="clear"></paper-icon-button>
+        </paper-input>
+        <!--<paper-input-container>
+            <label>Password</label>
+            <input is="iron-input" id="password" type="password" bind-value="{{formData.password}}">
+        </paper-input-container>-->
+
+        <div class="wrapper-btns">
+            <paper-button raised class="primary" on-tap="_postLogin">Log In</paper-button>
+            <paper-button class="button" on-tap="postRegister">Sign Up</paper-button>
+        </div>
+    </div>    
+</div>
+
+  </template>
+
+  <script>
+    class RegisterLogin extends Polymer.Element {
+      static get is() { return 'register-login'; }
+
+      static get properties() {
+        return {
+          formData: {
+                  type: Object,
+                  value: {},
+                  reflectToAttribute:true,  
+              },
+              userName: {
+                  type: String,
+                  value: '',  
+              },     
+        };
+      }
+
+      clearInput(){  
+        //this.set('formData.username', '');
+        this.username ="";
+      }
+
+      _postLogin(){
+        console.log("User Details"+ this.formData);
+        //if(this.formData.username == this.formData.password){
+          window.history.pushState({},null,'/dashboard');
+          window.location.href= '/dashboard';
+       // }
+      }
+    } 
+
+    window.customElements.define(RegisterLogin.is, RegisterLogin);
+  </script>
+</dom-module>

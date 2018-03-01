@@ -1,0 +1,27 @@
+{
+  "name": "cryptoprice-dash",
+  "authors": [
+    "Arman Eker"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "iron-ajax": "PolymerElements/iron-ajax#^2.0.5",
+    "paper-spinner": "PolymerElements/paper-spinner#^2.0.0",
+    "chart.js": "^2.6.0",
+    "moment": "^2.18.1",
+    "paper-button": "PolymerElements/paper-button#^2.0.0",
+    "paper-styles": "PolymerElements/paper-styles#^2.0.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "hello-world",
+  "description": "Simple Hello World check for JSHint (Code Linting)",
+  "author": "HCL",
+  "version": "0.0.1",
+  "devDependencies": {
+    "jshint": "^2.9.4"
+  },
+  "scripts": {
+    "test": "./node_modules/jshint/bin/jshint src/."
+  }
+}
+

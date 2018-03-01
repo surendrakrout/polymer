@@ -1,0 +1,44 @@
+{
+    "stockDetails": [
+      {
+        "transactionId": "HCL",
+        "stockName": "1200",
+        "volumePurchased": "1180",
+        "stockPrice": "1280",
+        "transactionDate": "1180",
+        "totalStockPrice": "1280",
+        "fees": "1180",
+        "totalStockPricePlusFees": "1280"
+      },
+      {
+        "transactionId": "TCS",
+        "stockName": "1200",
+        "volumePurchased": "1180",
+        "stockPrice": "1280",
+        "transactionDate": "1180",
+        "totalStockPrice": "1280",
+        "fees": "1180",
+        "totalStockPricePlusFees": "1280"
+      },
+      {
+        "transactionId": "INFI",
+        "stockName": "1200",
+        "volumePurchased": "1180",
+        "stockPrice": "1280",
+        "transactionDate": "1180",
+        "totalStockPrice": "1280",
+        "fees": "1180",
+        "totalStockPricePlusFees": "1280"
+      },
+      {
+        "transactionId": "Wipro",
+        "stockName": "1200",
+        "volumePurchased": "1180",
+        "stockPrice": "1280",
+        "transactionDate": "1180",
+        "totalStockPrice": "1280",
+        "fees": "1180",
+        "totalStockPricePlusFees": "1280"
+      }
+    ]
+  }

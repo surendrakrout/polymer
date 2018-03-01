@@ -1,0 +1,118 @@
+ <!DOCTYPE html> 
+
+<html ng-app=myapp>
+
+<head>
+
+<title>Initial Assessment</title> 
+
+<link rel=stylesheet href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+ <link rel=stylesheet href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"> 
+
+ <!--[if lt IE 9]><script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>   
+
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>     
+
+<![endif]--> 
+
+ <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script> 
+
+ <style>
+	.heading{
+	    margin-top: 5%;
+		margin-bottom: 2%;
+		font-size: 22px;
+		font-family: fantasy;
+		color: cornflowerblue;
+	}
+ </style>
+</head>
+
+ <body> 
+<div ng-controller=MyController> 
+
+<form name="form" role="form"> 
+<div class=container> 
+	<div class=row>
+		<div class="col-md-offset-5 col-md-2 heading">Registration Form</div>
+	</div>
+<div class=row>
+<div class=col-md-3></div>
+<div class=col-md-6> 
+	<div class="form-group"> 
+	 <label for="name">Name:</label>
+	  <input id=name ng-model=myForm.name type="text" class=form-control  placeholder="Enter Name">
+    </div>	 
+	
+	<div class="form-group"> 
+	 <label for="email">Email:</label>
+	  <input name=email ng-model=myForm.email type="email" class=form-control  placeholder="Enter email" required>
+      <span ng-if="form.email.$invalid || form.email.$error.required" style="color:red">Valid Email is required</span>
+    </div>	
+	
+	<div class="form-group"> 
+	 <label for="phone">Phone No.:</label>
+	 <input id=phone ng-model=myForm.phone type="number" class=form-control placeholder="Enter Phone no.">
+    </div>	
+	
+	<div class="form-group"> 
+	 <label for="password">Password:</label>
+	  <input name=password ng-model=myForm.pass ng-minlength=5 ng-maxlength=12 class=form-control placeholder="Enter Password" required>
+      <span ng-if="form.password.$invalid || form.password.$error.required" style="color:red">Valid Email is required</span>
+    </div>	
+	
+	<div class="form-group"> 
+	 <label for="address">Address:</label>
+	  <input id=address ng-model=myForm.add type="text" class=form-control placeholder="Enter address"> 
+    </div>	
+	
+	<div class="form-group"> 
+	 <label for="city">City:</label>
+	  <input id=city ng-model=myForm.city type="text" class=form-control placeholder="Enter City">
+    </div>	  	
+
+<div style="color: red; font-size: x-large;">{{message}}</div>
+<button class="btn btn-primary" ng-disabled="form.$invalid" ng-click="myForm.submitTheForm()">Submit Form</button>
+ </div> 
+ </div>     
+ </div> 
+
+</form>
+
+ </div> 
+
+<script>
+angular.module("myapp",[])
+.controller("MyController",function($scope){
+			$scope.myForm={};
+
+			$scope.myForm.name="";
+
+			$scope.myForm.email="";
+
+			$scope.myForm.phone="";
+
+			$scope.myForm.pass="";
+
+			$scope.myForm.add="";
+
+			$scope.myForm.city="";
+
+$scope.myForm.submitTheForm=function(){
+$scope.message = "Thank yor! You have successfully submitted Your form";
+			}
+			
+		});
+
+
+
+</script> 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script> 
+
+</body> 
+
+</html> 

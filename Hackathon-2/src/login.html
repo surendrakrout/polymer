@@ -1,0 +1,147 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-input-container.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="login-page">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+        padding: 10px;
+      }
+
+      .card {
+        width:50%;
+        margin-left:25%;
+        margin-top:10%;
+      }
+
+       .primary {
+        color: #fff;
+        background-color: var(--app-primary-color);
+      }
+
+      .btn-wraper {
+        margin-top: 3%;
+      }
+    </style>
+
+<div class="card">
+  <h3>Login</h3>
+
+  <!-- <iron-ajax id="loginForm"
+    handle-as"json"
+    debounce-duration="300"
+    on-response="_getResponseData">
+  </iron-ajax> -->
+
+  <!-- username field -->
+  <paper-input 
+    id="username"
+    name="username" 
+    label="Username" 
+    value="{{username}}" 
+    required 
+    auto-validate 
+    error-message="Username is required !">
+  </paper-input>
+
+  <!-- password field -->
+  <paper-input
+    id="password"
+    name="password" 
+    label="Password" 
+    value="{{password}}" 
+    required 
+    auto-validate 
+    error-message="Password is required !">
+  </paper-input>
+
+  <div class="btn-wraper">
+    <paper-button 
+      raised
+      id="btn-login"
+      class="primary" 
+      on-tap="_submitLogin" 
+      disabled="[[isDisabled]]">
+        Log In
+    </paper-button>
+  </div>
+</div>
+  </template>
+
+  <script>
+    class LoginPage extends Polymer.Element {
+      static get is() { return 'login-page'; }
+
+       static get properties() {
+        return {
+          username:{
+            type: String
+          },
+          password:{ 
+            type: String
+          },
+          isDisabled:{ 
+            type: Boolean, 
+            value:true
+          }
+        };
+      }
+
+      static get observers(){
+        return ['_detectChange(username, password)'];
+      }
+
+      _detectChange(username, userpassword){
+        var checkName, checkPass = false;
+        if(username) {
+          checkName = username.length === 0 ? false : true;
+        }
+        if (userpassword) {
+          checkPass = userpassword.length === 0 ? false : true;
+        }
+        this.isDisabled = !(checkName && checkPass);
+      }
+
+      _submitLogin(){
+        console.log("User Details"+ this.username);
+        //if(this.formData.username == this.formData.password){
+          localStorage.setItem("userID",this.username);
+          window.history.pushState({},null,'/details');
+          window.location.href= '/details';
+       // }
+
+      //  var ajax = this.$.loginForm;
+      //   ajax.method = "get";
+      //   ajax.url = "../Data/dummyJSON.json"
+      //   ajax.generateRequest();
+      // }
+
+      // _getResponseData(e, d) {
+      //   console.log("data", d.response.data);
+      //   setTimeout(() => {
+      //     this.set('route.path', 'dashboard');
+      //   }, 3000);
+      }
+    }
+
+    window.customElements.define(LoginPage.is, LoginPage);
+  </script>
+</dom-module>

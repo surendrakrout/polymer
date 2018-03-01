@@ -1,0 +1,164 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+<link rel="import" href="../bower_components/neon-animation/web-animations.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="place-order">
+    <template>
+     
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+        paper-button.indigo {
+    background-color: var(--paper-indigo-500);
+    color: white;
+    --paper-button-raised-keyboard-focus: {
+      background-color: var(--paper-pink-a200) !important;
+      color: white !important;
+    };
+  }
+  paper-button.indigo:hover {
+    background-color: var(--paper-indigo-400);
+  }
+  paper-button.green {
+    background-color: var(--paper-green-500);
+    color: white;
+  }
+  paper-button.green[active] {
+    background-color: var(--paper-red-500);
+  }
+  .align-right{
+    text-align: right;
+  }
+   paper-dropdown-menu, paper-listbox {
+    width: 100%;
+  }
+  paper-dropdown-menu {
+    margin: auto;
+    display: block;
+  } 
+    </style>
+  <iron-ajax id="submitme"
+            method="post"
+            handle-as="json"
+            on-response="_handleResponse"
+            content-type="application/json"
+            debounce-duration="300">
+        </iron-ajax>
+    <div class="card" style="width:40%;margin-left:28%;margin-top:5%;">
+      <div class="align-right">
+      <paper-button raised class="indigo" on-tap="_gotoStatus" name="status">Status</paper-button>
+      <paper-button toggles raised class="green" on-tap="_logout" name="logout">Logout</paper-button>
+      </div>
+      <div>
+        <paper-radio-group selected="{{type}}" >
+          <paper-radio-button name="buy">Buy</paper-radio-button>
+          <paper-radio-button name="sell">Sell</paper-radio-button>
+        </paper-radio-group>
+      </div>
+      <div>
+       <paper-dropdown-menu label="Symbol" value="{{symbol}}">
+         <paper-listbox slot="dropdown-content" selected="0">
+           <paper-item value="HCL">HCL</paper-item>
+           <paper-item value="TCS">TCS</paper-item>
+           <paper-item value="INFI">INFI</paper-item>
+             <paper-item value="WIPRO">WIPRO</paper-item>
+             </paper-listbox></paper-dropdown-menu>
+
+        <paper-input label="Quantity" name="Quantity" auto-validate pattern="[0-9]*" error-message="Numbers only!" value="{{quantity}}"></paper-input>
+
+         <paper-input label="Price" name="Price" auto-validate pattern="[0-9]*" error-message="Numbers only!" value="{{price}}"></paper-input>
+
+        <div class="align-right">
+        <paper-button toggles raised class="green" on-tap="_placeOrder" name="placeOrder" disabled="[[_check(type,price,quantity)]]">Place Order</paper-button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+    <script>
+        class PlaceOrder extends Polymer.Element {
+            static get is() {
+                return 'place-order';
+            }
+
+            static get properties() {
+            return {
+                  symbol: {
+                    type:String,
+                    value: ''
+                  },
+                  type: {
+                    type:String,
+                    value: 'buy'
+                  },
+                  price: {
+                    type:String,
+                    value: ''
+                  },
+                  quantity: {
+                    type:String,
+                    value: ''
+                  }
+            };
+          }
+
+          _check(type,price,quantity){
+              console.log("Check"+ this.symbol);
+              if(type.length===0 || price.length===0 || quantity.length===0) return true
+              return false;
+          }
+            _placeOrder() {
+              debugger
+                var userId = localStorage.getItem("userID");
+                this.params = {
+                    "userId": userId,
+                    "symbol": this.symbol,
+                    "type": this.type,
+                    "price": this.price,
+                    "quantity": this.quantity
+                };
+               console.log("Hii"+ this.params);
+                var ajax = this.$.submitme;
+                ajax.url = "http://10.117.189.11:8080/placeOrder";
+                ajax.body = this.params;
+                ajax.generateRequest();
+            }
+            _handleResponse() {
+                alert("Place order created");
+                window.location.href = "/status";
+            }
+            _gotoStatus() {
+                window.location.href = "/status";
+            }
+            _logout() {
+                window.location.href = "/home";
+                localStorage.removeItem(userID);
+            }
+        }
+
+        window.customElements.define(PlaceOrder.is, PlaceOrder);
+    </script>
+</dom-module>

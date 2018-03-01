@@ -1,0 +1,22 @@
+{
+    "chatHistory": [
+      {
+        "username": "Sam01",
+        "datetime": "10.30PM",
+        "messages": "Hello!",
+        "chatroom":"web development"
+      },
+      {
+        "username": "Sam02",
+        "datetime": "10.32PM",
+        "messages": "Hey!",
+        "chatroom":"web development"
+      },
+     {
+        "username": "Sam01",
+        "datetime": "10.35PM",
+        "messages": "Hw r u?!",
+        "chatroom":"web development"
+      }
+    ]
+}

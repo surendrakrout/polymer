@@ -1,0 +1,227 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/chat-window/chat-window.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/vaadin-icons/vaadin-icons.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="chat-page">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+        padding: 10px;
+      }
+      
+      .indigo {
+        background-color:#4285f4;
+         color:white;
+         padding: 0.9em 0.6em;
+         min-width: 16.15em;
+      }
+      .clearfix { *zoom: 1; } /* For IE 6/7 */
+        .clearfix:before, .clearfix:after {
+            content: "";
+            display: table;
+        }
+        .clearfix:after { clear: both; }
+
+       .chat-history {
+        height: 252px;
+        padding: 8px 24px;
+        overflow-y: scroll;
+      }
+
+      #live-chat {
+      bottom: 0;
+      font-size: 12px;
+      right: 24px;
+    }
+
+    #live-chat header {
+      background: #000;
+      border-radius: 5px 5px 0 0;
+      color: #fff;
+      cursor: pointer;
+      font-size:20px;
+      padding: 0px 24px;
+      text-align: center;
+      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+    .hd-left {
+      width: 50%; 
+      float: left;
+      text-align: left;
+    }
+    .hd-right {
+      float:right;
+      margin-top: 10px;
+    margin-right: -24px;
+    }
+    .chat-message-content h5 {
+
+   font-size: 14px;
+   float: left;
+   margin:0px;
+   padding:0px;
+    }
+    .msg-content {
+      border-radius:8px;
+      padding:8px;
+      background: #eee;
+      display: inline-block;
+    }
+
+    .chat-message-content span{
+    float:right;
+    color:blue;
+    font-size: 14px;
+
+    }
+    .button-container{
+     position:relative; 
+
+    }
+    .tp-user{color:green;}
+    .send-btn{position: absolute;top:0px;right:0;background:#4285f4; color:#fff;font-size:15px;}
+
+    </style>
+
+    <iron-ajax id="chatService"
+      handle-as"json"
+      debounce-duration="300"
+      content-type="application/json"
+      on-response="_getData"></iron-ajax>
+
+      <!--<iron-ajax auto 
+      url="../data/dummy-JSON.json"
+      handle-as"json"
+      debounce-duration="300"
+      on-response="getData"></iron-ajax>-->
+
+  <div class="card">
+  <div id="live-chat">
+		
+		<header class="clearfix">
+			<div class="hd-left"> <h4><iron-icon class="tp-user" icon="vaadin:user"></iron-icon> [[userName]]</h4></div>
+      <div class="hd-right">
+      <paper-button class="pink" on-tap="_close" name="close">Close</paper-button>
+      <div>
+		</header>
+
+		<div class="chat">
+
+	<div class="chat-history">
+		 <template is="dom-repeat" items="[[userData]]">
+				<div class="chat-message clearfix" >
+					<div class="chat-message-content clearfix">
+              <div class="clearfix"><h5><iron-icon  icon="vaadin:user"></iron-icon> [[item.username]]</h5> 
+            <span class="chat-time">[[item.datetime]]</span> </div>
+            
+						<p class="msg-content">[[item.messages]]</p>
+
+
+					</div> <!-- end chat-message-content -->
+
+				</div> <!-- end chat-message -->
+
+				<hr>
+		 </template>
+
+			</div> 
+      <p class="chat-feedback">Your partner is typing…</p>
+       <div class="button-container">
+					<paper-input label="Type your message" name="message" type= "text" value="{{msg}}" autofocus>
+          </paper-input>
+           <paper-button toggles raised class="send-btn" on-tap="_sendMsg" name="Send">Send</paper-button>
+        </div>
+		</div>
+  </div>
+</div>  
+  </template>
+
+  <script>
+    class ChatPage extends Polymer.Element {
+      static get is() { return 'chat-page'; }
+
+      static get properties(){
+        return{
+          userData:{
+            type:Object,
+            value:{},
+            notify:true
+          },
+          interest:{
+            type:String,
+            value:''
+          },
+          userName:{
+            type:String,
+            value:''
+          },
+          msg:{
+            type:String,
+            value:''
+          },
+        }
+      }
+
+       _chatServices() {
+        var ajax = this.$.chatService;
+        if(this.msg) {
+        ajax.method = "post";
+        ajax.body = this.param
+        ajax.url = "http://localhost:3000/chatHistory"
+        }else{
+        ajax.method = "get";
+        ajax.url = "http://localhost:3000/chatHistory"
+        }
+        ajax.generateRequest();
+      }
+
+      _sendMsg() {
+        this.param ={
+          "chatroom": this.interest,
+          "username": this.userName,
+          "messages": this.msg,
+          "dateTime" : Date.now()
+        }
+        this._chatServices();
+      }      
+
+      _getData(event,Request){
+        this.userData = Request.response;
+        console.log(this.userData);
+      }
+
+      ready(){
+        super.ready();
+       this.userName= localStorage.getItem("userID");
+        this.interest= localStorage.getItem("interest");
+        this._chatServices();
+      }
+
+      _close(){
+        window.location.href= '/dashboard';
+      }
+   
+    }
+    window.customElements.define(ChatPage.is, ChatPage);
+    
+    
+  </script>
+
+
+</dom-module>
+

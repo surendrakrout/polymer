@@ -1,0 +1,90 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="chat-dashboard">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+        padding: 10px;
+      }
+      .indigo {
+        background-color:#4285f4;
+         color:white;
+         padding: 0.9em 0.6em;
+         min-width: 16.15em;
+      }
+    </style>
+
+    <div class="card">
+      <h1 style="text-align:center">Chat Dashboard</h1><br>
+          <paper-dropdown-menu id="user" label=" Select User" value="{{userName}}">
+          <paper-listbox slot="dropdown-content" class="dropdown-content">
+            <paper-item >Sam01</paper-item>
+            <paper-item >Sam02</paper-item>
+            <paper-item >Sam03</paper-item> 
+              </paper-listbox></paper-dropdown-menu>
+      <div style="margin-left:40%">
+      <paper-button raised class="indigo" on-click="_openChatbox1" value="{{webDev}}">Web Development</paper-button><br><br>
+      <paper-button raised class="indigo" on-click="_openChatbox2" value="{{RelMan}}">Release Management</paper-button>
+      <div>
+    </div>
+  </template>
+
+  <script>
+    class ChatDashboard extends Polymer.Element {
+      static get is() { return 'chat-dashboard'; }
+
+      static get properties(){
+        return{
+          userName:{
+            type:String,
+            value:''
+          },
+          webDev:{
+            type:String,
+            value:'Web Development'
+          },
+          RelMan:{
+            type:String,
+            value:'Release Management'
+          }
+        }
+      }
+
+        _openChatbox1()  {
+          localStorage.setItem("userID",this.userName);
+          localStorage.setItem("interest",this.webDev);
+         this._taskSelection();
+        }
+
+        _openChatbox2()  {
+          localStorage.setItem("userID",this.userName);
+          localStorage.setItem("interest",this.RelMan);
+         this._taskSelection();
+        }
+
+      _taskSelection(){
+        window.history.pushState({},null,'/chat-window');
+          window.location.href= '/chat-window';
+      }
+    }
+
+    window.customElements.define(ChatDashboard.is, ChatDashboard);
+  </script>
+</dom-module>
